@@ -1,6 +1,7 @@
 
 from tkinter import *
 from tkinter import filedialog
+from Analizador import *
 
 
 class Ventanas:
@@ -54,6 +55,10 @@ class Ventanas:
         print(self.texto)
         self.area.insert('end',self.texto)
 
+        #ANALIZAR ARCHIVO QUE SE CARGO
+        analizar = Analisis()
+        analizar.Comienzo(self.direccion)
+
     #METODO PARA GUARDAR EN EL MISMO ARCHIVO LOS CAMBIOS REALIZADOS
     def Guardar(self):
 
@@ -61,6 +66,9 @@ class Ventanas:
         archivo = open(self.direccion, 'w', encoding='utf-8')
         archivo.write(texto)
         archivo.close()
+        #ANALIZAR ARCHIVO QUE SE CARGO
+        analizar = Analisis()
+        analizar.Comienzo(self.direccion)
 
     #METODO PARA GUARDAR EN UN ARCHIVO NUEVO LOS CAMBIOS REALIZADOS
     def Guardar_como(self):
@@ -82,5 +90,7 @@ class Ventanas:
         archivo = open('Contenido.gpw', 'w', encoding='utf-8')
         archivo.write(contenido)
         archivo.close()
+
+        
 
             

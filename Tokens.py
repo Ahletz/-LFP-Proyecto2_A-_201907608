@@ -29,7 +29,7 @@ class Token:
         final = '</table></body></html>'
         #contenido de html
 
-        contenido = '<tr>' + '<th>' + 'TIPO' + '</th>' + '<th>' + 'TOKEN' + '</th>' + '<th>' + 'LINEA' + '</th>' + '<th>' + 'COLUMNA' + '</th>' +'</tr>'+'</thead>'
+        contenido = '<tr>' + '<th>' + 'LEXEMA' + '</th>' + '<th>' + 'TOKEN' + '</th>' + '<th>' + 'LINEA' + '</th>' + '<th>' + 'COLUMNA' + '</th>' +'</tr>'+'</thead>'
 
         for i in self.lista: #agregar a la tabla los respectivos tokens 
 
