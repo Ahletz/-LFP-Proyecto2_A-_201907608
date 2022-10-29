@@ -3,13 +3,17 @@ Contenedor contlogin;
 Contenedor contFondo; 
 Boton cmdIngresar; 
 Clave pswClave; 
-Etiqueta passw; 
+Etiqueta passw;
+/* COMENTARIO DE PRUEBA 
+DE VARIAS LINEAS
+*/ 
 Etiqueta Nombre; 
 Texto Texto0; 
+//#$Comentario No.1
 Contenedor contlogo2; 
 Contenedor ContLogo1; 
 Contenedor ContBody; 
-Controles --> 
+Controles--> 
 
 <!--propiedades 
 /* 

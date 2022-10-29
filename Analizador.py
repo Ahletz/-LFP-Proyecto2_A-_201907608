@@ -1,4 +1,5 @@
 
+
 from Tokens import *
 from Errores import *
 
@@ -111,6 +112,14 @@ class Analisis:
                 if i.isalpha():
 
                     palabra += i #alamcenar contenido dentro del lector 
+                
+                elif i == '/':
+
+                    Tipo = 'DIAGONAL'
+
+                    token.Contruccion(Tipo,palabra,linea,columna)
+
+                    estado = 6
 
                 elif i == ' ':
                     
@@ -135,6 +144,8 @@ class Analisis:
                     Contenidos.append(palabra) #agregar la palabra a la lista 
 
                     palabra = '' #Limpiar la palabra
+                    estado = 4 #cambio de estado 
+
                 
                 elif palabra.upper() == 'BOTON':
 
@@ -145,6 +156,8 @@ class Analisis:
                     Contenidos.append(palabra) #agregar la palabra a la lista 
 
                     palabra = '' #Limpiar la palabra
+                    estado = 4 #cambio de estado 
+
 
                 elif palabra.upper() == 'CHECK':
 
@@ -155,6 +168,8 @@ class Analisis:
                     Contenidos.append(palabra) #agregar la palabra a la lista 
 
                     palabra = '' #Limpiar la palabra
+                    estado = 4#cambio de estado 
+
 
                 elif palabra.upper() == 'RADIOBOTON':
 
@@ -165,6 +180,8 @@ class Analisis:
                     Contenidos.append(palabra) #agregar la palabra a la lista 
 
                     palabra = '' #Limpiar la palabra
+                    estado = 4 #cambio de estado 
+
 
                 elif palabra.upper() == 'TEXTO':
 
@@ -175,6 +192,8 @@ class Analisis:
                     Contenidos.append(palabra) #agregar la palabra a la lista 
 
                     palabra = '' #Limpiar la palabra
+                    estado = 4 #cambio de estado 
+
                     
                 elif palabra.upper() == 'AREATEXTO':
 
@@ -185,6 +204,8 @@ class Analisis:
                     Contenidos.append(palabra) #agregar la palabra a la lista 
 
                     palabra = '' #Limpiar la palabra
+                    estado = 4 #cambio de estado 
+
 
                 elif palabra.upper() == 'CLAVE':
 
@@ -195,6 +216,8 @@ class Analisis:
                     Contenidos.append(palabra) #agregar la palabra a la lista 
 
                     palabra = '' #Limpiar la palabra
+                    estado = 4 #cambio de estado 
+
 
                 elif palabra.upper() == 'CONTENEDOR':
 
@@ -205,6 +228,8 @@ class Analisis:
                     Contenidos.append(palabra) #agregar la palabra a la lista 
 
                     palabra = '' #Limpiar la palabra
+                    estado = 4 #cambio de estado 
+
 
                 elif palabra.upper() == 'CONTROLES':
 
@@ -260,7 +285,6 @@ class Analisis:
 
                     token.Contruccion(Tipo,i,linea,columna) #contruccion de token
 
-                    estado = 2 #cambio de estado 
 
                 elif i == '>':
 
@@ -268,7 +292,7 @@ class Analisis:
 
                     token.Contruccion(Tipo,i,linea,columna) #contruccion de token
 
-                    estado = 2 #cambio de estado 
+                    estado = 9 #cambio de estado 
 
 
 
@@ -281,6 +305,159 @@ class Analisis:
                     error.Crear(i,linea,columna) #lista de errores
 
 
+            elif estado == 6: #ESTADO DE COMENTARIO DE UNA LINEA
+
+                if i == '/':
+
+                    Tipo =  'DIAGONAL'
+                    token.Contruccion(Tipo,i,linea,columna) #contruccion de token
+
+                elif i == '*': #comentario de varias lineas
+
+                    Tipo =  'ASTERISCO'
+                    token.Contruccion(Tipo,i,linea,columna) #contruccion de token
+
+                    estado = 7
+
+                elif i =='#':
+                    
+                    Tipo =  'NUMERAL'
+                    token.Contruccion(Tipo,i,linea,columna) #contruccion de token
+                
+                elif i == '$':
+
+                    Tipo =  'DOLLAR'
+                    token.Contruccion(Tipo,i,linea,columna) #contruccion de token
+
+                elif i.isalnum() or i.isalpha() or i == ' 'or i == '\t' or i == ',' or i == '.'  or i == ';'  or i == ':'  or i == '-':
+
+                    palabra += i
+
+                elif i == '\n':
+
+                    Tipo =  'COMENTARIO'
+                    token.Contruccion(Tipo,palabra,linea,columna) #contruccion de token
+
+                    palabra = '' #LIMPIAR PALABRA
+
+                    estado = 3 #cambio de estado 
+
+                else: 
+
+                    error.Crear(i,linea,columna) #lista de errores
+
+            elif estado == 7: #ESTADO DE COMENTARIO DE VARIAS LINEAS
+
+                if i == '*':
+
+                    Tipo =  'ASTERISCO'
+                    token.Contruccion(Tipo,i,linea,columna) #contruccion de token
+
+                    palabra = '' #LIMPIAR PALABRA
+
+                    estado = 8 #cambio de estado
+
+                elif i.isalnum() or i.isalpha() or i == ' ' or i == '\t' or i == '\n':
+
+                    palabra += i
+
+                else: 
+
+                    error.Crear(i,linea,columna) #lista de errores
+
+            elif estado == 8: #ESTADO DE COMENTARIO DE VARIAS LINEAS
+
+                if i == '/':
+                    
+                    Tipo =  'DIAGONAL'
+                    token.Contruccion(Tipo,i,linea,columna) #contruccion de token
+                    estado = 3
+
+                elif i == ' ' or i == '\n' or i == '\t':
+
+                    continue #si vienen espacio 
+
+                else: 
+
+                    error.Crear(i,linea,columna) #lista de errores
+
+
+            elif estado == 9:
+
+                if i == '<':
+
+                    Tipo = 'MENOR QUE' #Token 
+
+                    token.Contruccion(Tipo,i,linea,columna) # contruccion del token
+
+                elif i == '!':
+
+                    Tipo = 'EXCLAMACION' #Token 
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                elif i == '-':
+
+                    Tipo = 'GUION' #Token 
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    estado = 10 #cambio de estado 
+
+
+                elif i == ' ' or i == '\n' or i == '\t':
+
+                    continue #si vienen espacio 
+
+                else: 
+
+                    error.Crear(i,linea,columna) #lista de errores
+
+            elif estado == 10:
+
+                if i == '-':
+
+                    Tipo = 'GUION' #Token 
+
+                    token.Contruccion(Tipo,i,linea,columna) #contruccion de token
+
+                    estado = 11 #cambio de estado 
+
+                elif i == ' ' or i == '\n' or i == '\t':
+
+                    continue #si vienen espacio 
+
+                else: 
+
+                    error.Crear(i,linea,columna) #lista de errores
+
+            elif estado == 11:
+
+                if i.isalpha(): 
+
+                    palabra += i #almacenar todos los caracterers dentro de la palabra
+
+
+                if palabra.upper() == 'PROPIEDADES':
+
+
+                    Tipo = 'PALABRA RESERVADA'
+
+                    token.Contruccion(Tipo,palabra,linea,columna)
+
+
+                    palabra = '' #Limpiar la palabra
+                    estado = 12 #cambio de estado 
+
+
+            
+
+
+        error.Mostrar_error()
+        print()
+
+        token.Mostrar_token()
+        print()
 
         for j in Lista:
 
