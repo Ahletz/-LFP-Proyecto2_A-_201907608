@@ -2,6 +2,7 @@
 from tkinter import *
 from tkinter import filedialog
 from Analizador import *
+import webbrowser
 
 
 class Ventanas:
@@ -37,8 +38,8 @@ class Ventanas:
         boton5 = Button(self.ventana, text='Salir',height=1,width=10,background='gray64', command=self.ventana.destroy).place(x=365,y=10)
 
         boton6 = Button(self.ventana, text='Generar WEB',height=1,width=15,background='gray64').place(x=840,y=60)
-        boton7 = Button(self.ventana, text='Tokens',height=1,width=15,background='gray64').place(x=840,y=90)
-        boton8 = Button(self.ventana, text='Errores',height=1,width=15,background='gray64').place(x=840,y=120)
+        boton7 = Button(self.ventana, text='Tokens',height=1,width=15,background='gray64', command=self.Tokens).place(x=840,y=90)
+        boton8 = Button(self.ventana, text='Errores',height=1,width=15,background='gray64', command=self.Errores).place(x=840,y=120)
 
 
      #METODO PARA LA SELECCION DE ARCHIVO 
@@ -90,6 +91,15 @@ class Ventanas:
         archivo = open('Contenido.gpw', 'w', encoding='utf-8')
         archivo.write(contenido)
         archivo.close()
+
+    def Tokens(self):
+
+        webbrowser.open_new_tab('REPORTE TOKENS.html')
+
+    def Errores(self):
+
+        webbrowser.open_new_tab('REPORTE ERRORES.html')
+
 
         
 

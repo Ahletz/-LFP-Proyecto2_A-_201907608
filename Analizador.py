@@ -766,6 +766,17 @@ class Analisis:
 
             print(j)
 
+
+        error.Reporte_Errores()
+        error.Css_reporte()
+        token.Reporte_Tokens()
+        token.Css_reporte()
+
+
+
+
+        
+
                     
 
 
