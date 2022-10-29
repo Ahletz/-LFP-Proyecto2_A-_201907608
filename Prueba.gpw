@@ -67,6 +67,8 @@ Definicion de propiedades
  ContBody.setColorFondo(64,224,208); 
  //#$fin de ContBody
 
+ propiedades -->
+
  <!--Colocacion 
  /* 
  Posicionamiento de los controles 

@@ -438,7 +438,7 @@ class Analisis:
                     palabra += i #almacenar todos los caracterers dentro de la palabra
 
 
-                if palabra.upper() == 'PROPIEDADES':
+                if palabra.upper() == 'PROPIEDADES' or palabra.upper() == 'COLOCACION':
 
 
                     Tipo = 'PALABRA RESERVADA'
@@ -450,7 +450,310 @@ class Analisis:
                     estado = 12 #cambio de estado 
 
 
+            elif estado == 12:
+
+                if i.isalpha():
+
+                    palabra += i 
+
+                elif i == '/':
+
+                    Tipo = 'DIAGONAL'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    estado = 18
+
+
+                elif  i == '.':
+
+                    Tipo = 'PUNTO'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    Tipo = 'PALABRA RESERVADA'
+
+                    token.Contruccion(Tipo,palabra,linea,columna)
+
+                    Nombre = palabra
+
+                    palabra = ''
+
+                    estado = 13
+
+                elif i == ' ' or i == '\n' or i == '\t':
+
+                    continue #si vienen espacio 
+
+                else: 
+
+                    error.Crear(i,linea,columna) #lista de errores
+
+
+                if palabra.upper() == 'PROPIEDADES' or palabra.upper() == 'COLOCACION':
+
+                    estado = 17
+
+                    Tipo = 'PALABRA RESERVADA'
+
+                    token.Contruccion(Tipo,palabra,linea,columna)
+
+                    palabra = ''
+
+
+            elif estado == 13:
+
+                if i.isalpha():
+
+                    palabra += i
+
+                elif i == '(':
+
+                    Tipo = 'PARENTESIS'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    Tipo = 'PALABRA RESERVADA'
+
+                    token.Contruccion(Tipo,palabra,linea,columna)
+
+                    proposito = palabra
+
+                    Contenidos.append(proposito) #agregar el proposito de los datos
+
+                    palabra = ''
+
+                    estado = 14
+
+                
+                elif i == ' ' or i == '\n' or i == '\t':
+
+                    continue #si vienen espacio 
+
+                else: 
+
+                    error.Crear(i,linea,columna) #lista de errores
+
+
+            elif estado == 14:
+
+                if i.isalnum():
+
+                    palabra += i
+                    estado = 15 
+
+                elif i.isalpha():
+
+                    palabra += i
+                    estado = 16
+
+                elif i ==  '"' or  i == "'":
+
+                    Tipo = 'COMILLAS SIMPLES/DOBLES'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+
+                elif i == ' ' or i == '\n' or i == '\t':
+
+                    continue #si vienen espacio 
+
+                else: 
+
+                    error.Crear(i,linea,columna) #lista de errores
+
+
+            elif estado == 15:
+
+                if i.isalnum():
+
+                    palabra += i
+
+                elif i == ',':
+
+                    Tipo = 'COMA'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    Contenidos.append(palabra) #agregar datos del contenido 
+
+                    palabra = ''
+
+                elif i == ')':
+
+                    Tipo = 'PARENTESIS'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    for k in Lista:
+
+                        if Nombre == k[1]:
+
+                            k.append(Contenidos) #agregar datos del contenido 
+
+                    Contenidos = [] #limpiar arreglo para nuevos contenidos
+
+                    palabra = ''
+
+                elif i == ';':
+
+                    Tipo = 'PUNTO Y COMA'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    estado = 12
+
+
+                elif i == ' ' or i == '\n' or i == '\t':
+
+                    continue #si vienen espacio 
+
+                else: 
+
+                    error.Crear(i,linea,columna) #lista de errores
+
+
+            elif estado == 16:
+
+                    if i.isalpha():
+
+                        palabra += i
+
+                    elif i == '"' or i == "'":
+
+                        Tipo = 'COMILLAS'
+
+                        token.Contruccion(Tipo,i,linea,columna)
+
+
+                    elif i == ')':
+
+                        Tipo = 'PARENTESIS'
+
+                        token.Contruccion(Tipo,i,linea,columna)
+
+                        Tipo = 'PALABRA RESERVADA'
+
+                        token.Contruccion(Tipo,palabra,linea,columna)
+
+                        Contenidos.append(palabra) #agregar datos del contenido 
+
+                        for k in Lista:
+
+                            if Nombre == k[1]:
+
+                                k.append(Contenidos) #agregar datos del contenido 
+
+                        Contenidos = [] #limpiar arreglo para nuevos contenidos
+
+                        palabra = ''
+
+                    elif i == ';':
+
+                        Tipo = 'PUNTO Y COMA'
+
+                        token.Contruccion(Tipo,i,linea,columna)
+
+                        estado = 12
+
+                    elif i == ' ' or i == '\n' or i == '\t':
+
+                        continue #si vienen espacio 
+
+                    else: 
+
+                        error.Crear(i,linea,columna) #lista de errores
+
+
+            elif estado == 17:
+
+                if i == '-':
+
+                    Tipo = 'GUION'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                elif i == '>':
+
+                    Tipo = 'MAYOR QUE '
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    estado = 9
+
+
+            elif estado == 18:
+
+                if i == '/':
+
+                    Tipo = 'DIAGONAL'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                elif i == '*':
+
+                    Tipo = 'ASTERISCO'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    estado = 19
+
+                elif i == '#':
+
+                    Tipo = 'NUMERAL'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                elif i == '$':
+
+                    Tipo = 'DOLAR'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    estado = 20
+
+            elif estado == 19:
+
+                if i.isalpha() or i.isalnum() or i == '\n' or i == '\t' or i == ' ':
+
+                    palabra += i
+
+                elif i == '*':
+
+                    Tipo = 'ASTERISCO'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    Tipo = 'COMENTARIO'
+
+                    token.Contruccion(Tipo,palabra,linea,columna)
+
+                    palabra = ''
+
+                elif i == '/':
+
+                    Tipo = 'DIAGONAL'
+
+                    token.Contruccion(Tipo,i,linea,columna)
+
+                    estado = 12
+
             
+            elif estado == 20:
+
+                if i.isalpha() or i.isalnum() or i == '\t' or i == ' ':
+
+                    palabra += i
+
+                elif i == '\n':
+
+                    Tipo = 'COMENTARIO'
+
+                    token.Contruccion(Tipo,palabra,linea,columna)
+
+                    palabra = ''
+
+                    estado = 12
 
 
         error.Mostrar_error()
